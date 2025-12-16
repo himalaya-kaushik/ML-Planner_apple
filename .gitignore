@@ -1,0 +1,11 @@
+ml-planner/
+__pycache__/
+*.pyc
+.env
+.vscode/
+.DS_Store
+data/
+logs/
+models/
+results/
+indic_nlp_resources/
