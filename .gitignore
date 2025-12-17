@@ -5,6 +5,4 @@ __pycache__/
 .vscode/
 .DS_Store
 logs/
-models/
-results/
 indic_nlp_resources/
