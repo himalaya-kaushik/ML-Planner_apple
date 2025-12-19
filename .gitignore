@@ -6,3 +6,7 @@ __pycache__/
 .DS_Store
 logs/
 indic_nlp_resources/
+checkpoints/
+data/processed_pairs.pt
+data/processed_hindi_vocab.json
+data/processed_tensors.pt
