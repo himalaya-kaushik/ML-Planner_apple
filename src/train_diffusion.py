@@ -5,21 +5,19 @@ from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
 import os
 
-# Import Models
 from src.models.vae import HindiVAE
 from src.models.diffusion import DiffusionPrior
 
 # CONFIG
-BATCH_SIZE = 64  # Diffusion is lighter than VAE, can do bigger batches
+BATCH_SIZE = 64 
 LR = 3e-4
 EPOCHS = 10
 MAX_LEN = 128
 LATENT_DIM = 128
 VOCAB_SIZE = 32000
 DEVICE = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
-VAE_CHECKPOINT = "checkpoints/vae_epoch_1.pth" # We will need this later
+VAE_CHECKPOINT = "checkpoints/vae_epoch_3.pth" # We will need this later
 
-# --- 1. Dataset Class for Pairs ---
 class TranslationDataset(Dataset):
     def __init__(self, path):
         data = torch.load(path)
@@ -73,14 +71,13 @@ def train():
         vae.load_state_dict(torch.load(VAE_CHECKPOINT, map_location=DEVICE))
         print(" VAE Loaded!")
     except:
-        print("⚠️  WARNING: VAE Checkpoint not found. Model will output garbage latents.")
-        print("    (This is fine for testing code logic, but bad for actual training)")
+        print(" WARNING: VAE Checkpoint not found. Model will output garbage latents.")
+        print(" (This is fine for testing code logic, but bad for actual training)")
     
     vae.eval() # Freeze VAE
     for p in vae.parameters():
         p.requires_grad = False
         
-    # Load Diffusion (Student)
     diffusion = DiffusionPrior(vocab_size=VOCAB_SIZE).to(DEVICE)
     optimizer = optim.AdamW(diffusion.parameters(), lr=LR)
     scheduler = NoiseScheduler(device=DEVICE)
@@ -94,12 +91,9 @@ def train():
             english = batch['english'].to(DEVICE)
             hindi = batch['hindi'].to(DEVICE)
             
-            # 1. Get Ground Truth Latents (z) from VAE
             with torch.no_grad():
-                # We only need the encoder part of VAE
-                # We modify VAE to return 'mu' (the clean latent)
-                _, mu, _ = vae(hindi, hindi) # We use 'mu' as the target latent
-                x_0 = mu.detach() # Detach from graph!
+                _, mu, _ = vae(hindi, hindi) 
+                x_0 = mu.detach() 
                 
             t = torch.randint(0, scheduler.num_timesteps, (english.shape[0],), device=DEVICE)
             
