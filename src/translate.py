@@ -115,7 +115,7 @@ if __name__ == "__main__":
         print("-" * 30)
         try:
             translation = translator.translate(s)
-            print(f"🇺🇸 En: {s}")
-            print(f"🇮🇳 Hi: {translation}")
+            print(f" En: {s}")
+            print(f" Hi: {translation}")
         except Exception as e:
             print(f" Error: {e}")
