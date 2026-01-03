@@ -51,9 +51,9 @@ class HindiFastDataset(Dataset):
         """
         Loads pre-processed tensors directly into RAM.
         """
-        print(f"📂 Loading data from {tensor_path}...")
+        print(f"Loading data from {tensor_path}...")
         self.data = torch.load(tensor_path)
-        print(f"✅ Loaded {len(self.data)} samples.")
+        print(f" Loaded {len(self.data)} samples.")
 
     def __len__(self):
         return len(self.data)

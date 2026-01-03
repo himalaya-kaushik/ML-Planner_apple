@@ -91,7 +91,7 @@ def preprocess():
     
     data_pairs = [] # Store tuples (english_ids, hindi_ids)
     
-    print(f"⚙️ Processing {NUM_SAMPLES} pairs...")
+    print(f" Processing {NUM_SAMPLES} pairs...")
     count = 0
     for example in tqdm(dataset, total=NUM_SAMPLES):
         if count >= NUM_SAMPLES:
@@ -125,9 +125,9 @@ def preprocess():
     src_tensors = torch.stack([x[0] for x in data_pairs])
     tgt_tensors = torch.stack([x[1] for x in data_pairs])
     
-    print(f"💾 Saving to {SAVE_PATH}...")
+    print(f" Saving to {SAVE_PATH}...")
     torch.save({"src": src_tensors, "tgt": tgt_tensors}, SAVE_PATH)
-    print("✅ Done! English-Hindi Pairs Ready.")
+    print(" Done! English-Hindi Pairs Ready.")
 
 if __name__ == "__main__":
     preprocess()
